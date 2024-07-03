@@ -1,0 +1,32 @@
+services:
+  lovecraft_db:
+    container_name: lovecraft_pg
+    image: postgres:15-alpine
+    ports:
+      - 5438:5432
+    env_file:
+      - .keys/.env
+    restart: always
+    volumes:
+      - pgdata1:/var/lib/postgresql/data
+
+  test_db:
+    container_name: test_pg
+    image: postgres:15-alpine
+    ports:
+      - 6000:5432
+    env_file:
+      - .keys/.env_test_db
+    restart: always
+    volumes:
+      - pgdata2:/var/lib/postgresql/data
+
+volumes:
+  pgdata1:
+  pgdata2:
+
+
+#    environment:
+#      - POSTGRES_USER=craft
+#      - POSTGRES_PASSWORD=craft
+#      - POSTGRES_DB=craft
