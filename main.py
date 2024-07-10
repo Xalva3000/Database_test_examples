@@ -6,8 +6,8 @@ from sys import argv
 from http_libs.custom_requests import internet
 from database.db_utils import fake
 from database.queries import LearningQuery
-from tests.test_db import launch_test_db
-from tests.test_request import launch_test_request
+from test.test_db import launch_test_db
+from test.test_request import launch_test_request
 
 logger = logging.getLogger(__name__)
 
@@ -27,11 +27,6 @@ def main():
     for func_name, query in LearningQuery.__dict__.items():
         if func_name.startswith('query'):
             print(query())
-
-
-def launch_tests(name='alex', password='12345'):
-    internet(name, password)
-    launch_test_request()
 
 
 
