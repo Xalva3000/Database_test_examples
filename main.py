@@ -1,13 +1,14 @@
 import logging
-import unittest
 from datetime import date
-from sys import argv
+import os
+from dotenv import load_dotenv
 
-from http_libs.custom_requests import internet
-from database.db_utils import fake
+from sqlalchemy import text
+
+from test.test_db import test_db_connect, driver_url, env_path_test
+
 from database.queries import LearningQuery
-from test.test_db import launch_test_db
-from test.test_request import launch_test_request
+
 
 logger = logging.getLogger(__name__)
 
@@ -24,15 +25,13 @@ logging.basicConfig(level=logging.INFO,
 
 
 def main():
-    for func_name, query in LearningQuery.__dict__.items():
-        if func_name.startswith('query'):
-            print(query())
+    # for func_name, query in LearningQuery.__dict__.items():
+    #     if func_name.startswith('query'):
+    #         print(query())
+    pass
+
 
 
 
 if __name__ == "__main__":
-    # if len(argv) > 1:
-    #     file, mode, *args = argv
-    #     print(file, mode, *args)
-
     main()
