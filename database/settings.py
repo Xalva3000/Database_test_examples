@@ -19,10 +19,8 @@ class DBSettings:
         return url
 
 
-
 if os_name == 'nt':
     env_path = r".\.keys\.env"
-    env_path_test = r".\.keys\.test.env"
 else:
     raise ValueError('Unknown OS data. No path to .env file.')
 

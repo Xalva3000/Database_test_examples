@@ -1,6 +1,5 @@
 from sqlalchemy import func, text as text_func, BigInteger, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship, declarative_base
 from datetime import datetime
 
 Base = declarative_base()

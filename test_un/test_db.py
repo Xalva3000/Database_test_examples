@@ -39,7 +39,6 @@ class TestDB(unittest.TestCase):
 
     def tearDown(self) -> None:
         metadata.drop_all(test_db_connect.engine)
-        pass
 
 def launch_test_db():
     unittest.main(r"tests\test_db")

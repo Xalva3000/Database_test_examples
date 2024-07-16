@@ -1,13 +1,7 @@
 import logging
 from datetime import date
-import os
-from dotenv import load_dotenv
-
-from sqlalchemy import text
-
-from test.test_db import test_db_connect, driver_url, env_path_test
-
 from database.queries import LearningQuery
+from database.repositiories.book_repository import BookRepository
 
 
 logger = logging.getLogger(__name__)
@@ -22,6 +16,7 @@ std_handler.setLevel(level=logging.INFO)
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s:%(levelname)s:%(name)s:%(funcName)s:%(message)s',
                     handlers=[file_handler, std_handler])
+
 
 
 def main():
