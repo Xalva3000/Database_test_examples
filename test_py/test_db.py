@@ -21,9 +21,10 @@ class TestBookRepository:
     def setup_method(self):
         metadata.create_all(test_db_connect.engine)
         self.library = BookRepository(test_db_connect.engine)
-        for _ in range(10):
+        for _ in range(9):
             new_book = BookCreate(author=fake.name(), title=fake.catch_phrase())
             self.library.create(new_book)
+        self.library.create(BookCreate(author="Пушкин АС", title="Избранное"))
 
     @pytest.mark.tryfirst
     def test_get_existing(self):
@@ -99,11 +100,14 @@ class TestBookRepository:
         assert new_book is None
 
 
+
     def test_update_partial(self):
         pass
 
     def test_create(self):
         pass
+
+
 
     @pytest.mark.skip
     def test_for_skip(self):

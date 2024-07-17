@@ -9,6 +9,10 @@ services:
     restart: always
     volumes:
       - pgdata1:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=craft
+      - POSTGRES_PASSWORD=craft
+      - POSTGRES_DB=craft
 
   test_db:
     container_name: test_pg
@@ -20,13 +24,13 @@ services:
     restart: always
     volumes:
       - pgdata2:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=testcraft
+      - POSTGRES_PASSWORD=testcraft
+      - POSTGRES_DB=testcraft
 
 volumes:
   pgdata1:
   pgdata2:
 
 
-#    environment:
-#      - POSTGRES_USER=craft
-#      - POSTGRES_PASSWORD=craft
-#      - POSTGRES_DB=craft

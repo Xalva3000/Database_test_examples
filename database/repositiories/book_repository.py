@@ -60,44 +60,19 @@ class BookRepository(Repository):
         return result.rowcount
 
 
+    def select_by_title(self, title: str):
+        stmt = select(Book).filter(Book.title == title)
+        with self.connect() as conn:
+            result = conn.execute(stmt)
+        return result.scalars().all()
 
-    # def select_all_id():
-    #     stmt = select(Book.id).order_by(Book.id)
-    #     result = session.execute(stmt)
-    #     return result.scalars().all()
-    #
-    # def select_book(
-    #     id,
-    #     engine: Engine = db_connect.engine
-    # ):
-    #     with engine.begin() as conn:
-    #         stmt = select(Book).where(id=id)
-    #         result = conn.execute(stmt)
-    #
-    #     return result
-    #
+    def select_title_contains(self, title: str):
+        stmt = select(Book).where(Book.title.contains(title))
+        with self.connect() as conn:
+            result = conn.execute(stmt)
+        return result.scalars().all()
 
-    #
-    # def select_all_txt(session: Session = db_connect.session_dependency()):
-    #     stmt = text("select * from book;")
-    #     result = session.execute(stmt)
-    #     return result.all()
-    #
-    # def select_by_title(title: str, session: Session = db_connect.session_dependency()):
-    #     stmt = select(Book).filter(Book.title == title)
-    #     result = session.execute(stmt)
-    #     return result.scalars().all()
-    #
-    # def select_title_contains(title: str, session: Session = db_connect.session_dependency()):
-    #     # stmt = select(Book).filter(Book.title.ilike(f'%{title}%')).all()
-    #     stmt = select(Book).where(Book.title.contains(title))
-    #     result = session.execute(stmt)
-    #     return result.scalars().all()
-    #
-    #
-    # def get_statement():
-    #     stmt = insert(Book).values(title='Преступление и наказание', author='Достоевский ФМ')
-    #     return stmt.compile(stmt, dialect=postgresql.dialect())
+
 
 # if __name__ == "__main__":
 #     repo = BookRepository(db_connect=db_connect)
