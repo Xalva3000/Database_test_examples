@@ -112,6 +112,9 @@ class TestBookRepository:
         [
             ('Lovecraft HP', 'Reanimator'),
             pytest.param(1, 2, marks=pytest.mark.xfail),
+            pytest.param(1.2, 42.2, marks=pytest.mark.xfail),
+            pytest.param(Decimal('2.3'), Decimal('2.3'), marks=pytest.mark.xfail),
+            pytest.param(True, False, marks=pytest.mark.xfail),
         ]
     )
     def test_create(self, author, title):
