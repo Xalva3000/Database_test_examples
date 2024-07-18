@@ -1,4 +1,5 @@
 import logging
+import unittest
 from datetime import date
 
 from database.filler import launch_filler
@@ -35,5 +36,7 @@ if __name__ == "__main__":
     path, *args = argv
     if "filler" in args:
         launch_filler()
+    elif "unit" in args:
+        unittest.main(r"test_un/")
     else:
         main()

@@ -15,7 +15,7 @@ class Repository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def update(self, id, values: dict):
+    def update(self, id, new_obj: object, partial=False):
         raise NotImplementedError
 
     @abstractmethod

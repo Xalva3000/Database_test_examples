@@ -99,13 +99,30 @@ class TestBookRepository:
         assert result is None
         assert new_book is None
 
-
-
     def test_update_partial(self):
-        pass
+        author = 'Lovecraft HP'
+        title = 'Reanimator'
+        book_in = BookUpdatePartial(author=author)
+        result = self.library.update(10, book_in, partial=True)
+        assert result.author == author
+        assert result.title != title
 
-    def test_create(self):
-        pass
+    @pytest.mark.parametrize(
+        "author, title",
+        [
+            ('Lovecraft HP', 'Reanimator'),
+            pytest.param(1, 2, marks=pytest.mark.xfail),
+        ]
+    )
+    def test_create(self, author, title):
+        book_in = BookCreate(author=author, title=title)
+        result = self.library.create(book_in=book_in)
+        assert result
+        new_book = self.library.get(11)
+        assert new_book.author == author
+        assert new_book.title == title
+
+
 
 
 
