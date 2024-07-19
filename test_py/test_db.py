@@ -1,5 +1,6 @@
 import pytest
 from _decimal import Decimal
+from sqlalchemy import text
 
 from database.connect import SyncDBConnect
 from database.models import metadata, Book
@@ -26,6 +27,9 @@ class TestBookRepository:
             self.library.create(new_book)
         self.library.create(BookCreate(author="Пушкин АС", title="Избранное"))
 
+    def teardown_method(self):
+        metadata.drop_all(test_db_connect.engine)
+
     @pytest.mark.tryfirst
     def test_get_existing(self):
         result = self.library.get(1)
@@ -43,13 +47,10 @@ class TestBookRepository:
         result = self.library.get_all()
         assert result, sorted(result, key=lambda tpl: tpl[0])
 
-
-
     def test_delete(self):
         result = self.library.delete(1)
         assert result == 1
         assert self.library.get(1) is None
-
 
     @pytest.mark.trylast
     def test_delete_all(self):
@@ -125,15 +126,43 @@ class TestBookRepository:
         assert new_book.author == author
         assert new_book.title == title
 
+    def test_select_by_title_existing(self):
+        result = self.library.select_by_title("Избранное")
+        assert result[0].title == "Избранное"
+
+    def test_select_by_title_not_existing(self):
+        result = self.library.select_by_title("123")
+        assert len(result) == 0
 
 
+    def test_select_by_title_contains_existing(self):
+        result = self.library.select_title_contains("Изб")
+        assert result[0].title == "Избранное"
 
+    def test_select_by_author_existing(self):
+        result = self.library.select_by_author("Пушкин АС")
+        assert result[0].author == "Пушкин АС"
+
+    def test_select_by_author_not_existing(self):
+        result = self.library.select_by_author("123")
+        assert len(result) == 0
+
+    @pytest.mark.trylast
+    def test_select_by_author_contains_existing(self):
+        result = self.library.select_author_contains("Пуш")
+        assert result[0].author == "Пушкин АС"
+
+    def test_select_by_date_create(self):
+        print(self.library.get(1))
+
+    def test_timezone(self):
+        #text("SET timezone = 'America/New_York'")
+        with test_db_connect.engine.begin() as conn:
+            result = conn.execute(text("show timezone;"))
+        print(result.fetchall())
 
     @pytest.mark.skip
     def test_for_skip(self):
         pass
 
 
-
-    def teardown_method(self):
-        metadata.drop_all(test_db_connect.engine)

@@ -35,8 +35,6 @@ class BookRepository(Repository):
         return result
 
     def update(self, book_id: Book | int, book_update: BookUpdate | BookUpdatePartial, partial=False):
-        # for k, v in book_update.model_dump(exclude_unset=partial).items():
-
         stmt = update(Book).where(
             Book.id == book_id
         ).values(
@@ -59,21 +57,27 @@ class BookRepository(Repository):
             result = conn.execute(stmt)
         return result.rowcount
 
-
     def select_by_title(self, title: str):
-        stmt = select(Book).filter(Book.title == title)
+        stmt = select(Book).where(Book.title == title)
         with self.connect() as conn:
             result = conn.execute(stmt)
-        return result.scalars().all()
+        return result.all()
 
     def select_title_contains(self, title: str):
         stmt = select(Book).where(Book.title.contains(title))
         with self.connect() as conn:
             result = conn.execute(stmt)
-        return result.scalars().all()
+        return result.all()
 
+    def select_by_author(self, author: str):
+        stmt = select(Book).filter(Book.author == author)
+        with self.connect() as conn:
+            result = conn.execute(stmt)
+        return result.all()
 
+    def select_author_contains(self, author: str):
+        stmt = select(Book).where(Book.author.contains(author))
+        with self.connect() as conn:
+            result = conn.execute(stmt)
+        return result.all()
 
-# if __name__ == "__main__":
-#     repo = BookRepository(db_connect=db_connect)
-#     repo.get(1)

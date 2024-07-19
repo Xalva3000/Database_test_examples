@@ -13,6 +13,8 @@ services:
       - POSTGRES_USER=craft
       - POSTGRES_PASSWORD=craft
       - POSTGRES_DB=craft
+      - TZ=Europe/London
+      - DEBIAN_FRONTEND=noninteractive
 
   test_db:
     container_name: test_pg
@@ -28,6 +30,8 @@ services:
       - POSTGRES_USER=testcraft
       - POSTGRES_PASSWORD=testcraft
       - POSTGRES_DB=testcraft
+      - TZ=Europe/London
+      - DEBIAN_FRONTEND=noninteractive
 
 volumes:
   pgdata1:
