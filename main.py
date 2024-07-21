@@ -29,14 +29,9 @@ def main():
             print(query())
 
 
-
-
-
 if __name__ == "__main__":
     path, *args = argv
     if "filler" in args:
         launch_filler()
-    elif "unit" in args:
-        unittest.main(r"test_un/")
     else:
         main()

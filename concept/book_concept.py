@@ -1,29 +1,46 @@
-
-BookID = type('Book', (object,), {'title': str, "author":str})
-
-print(BookID)
+from concept.story_concept import StoryConcept
 
 
-class BookConcept(BookID):
+# BookID = type('Book', (object,), {'title': str, "author":str})
+
+class BookConcept:
     def __init__(self, title, page_size=1050):
         self.title = title
         self.page_size = page_size
         self.stories = []
         self.pages: dict[int, str] = {}
-        self._file_path = None
+
+    def append_story(self, story: StoryConcept):
+        if isinstance(story, StoryConcept):
+            self.stories.append(story)
+        return f"{story.title} appended"
+
+    def delete_story(self, title: StoryConcept):
+        for index, story in self.stories:
+            if story.title == title:
+                del self.stories[index]
+                return f"{story.title} deleted"
+
+    def prepare(self):
+        if self.stories:
+            for story in self.stories:
+                self.__sew_story(story.text)
+            return f"{len(self.stories)} stories are sewn in."
+        else:
+            return f"No story to sew in."
 
 
-    @property
-    def file_path(self):
-        return self._file_path
-
-    @file_path.setter
-    def file_path(self, value):
-        self._file_path = value
-
-    @file_path.deleter
-    def file_path(self):
-        self._file_path = None
+    def __sew_story(self, text) -> None:
+        indent = 0
+        count = 1 if not self.pages else max(self.pages) + 1
+        while indent < len(text):
+            tpl = self._get_part_text(text, indent, self.page_size)
+            if tpl[0]:
+                self.pages[count] = tpl[0].lstrip()
+                indent += tpl[1]
+                count += 1
+            else:
+                break
 
     def _get_part_text(self, text, start, page_size):
         char_end = ',.!:;?'
@@ -36,14 +53,4 @@ class BookConcept(BookID):
                     result = self._get_part_text(text, start, page_size - 2)[0]
                 return result, len(result)
 
-    def prepare_book(self) -> None:
-        indent = 0
-        count = 1
-        while indent < len(self.text):
-            tpl = self._get_part_text(self.text, indent, self.page_size)
-            if tpl[0]:
-                self.pages[count] = tpl[0].lstrip()
-                indent += tpl[1]
-                count += 1
-            else:
-                break
+
